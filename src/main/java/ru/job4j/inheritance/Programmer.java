@@ -4,8 +4,8 @@ public class Programmer extends Engineer {
 
     private String programmingLanguage;
 
-    public Programmer(String name, String surname, String education, String birthday, String programmingLanguage) {
-        super(name, surname, education, birthday);
+    public Programmer(String name, String surname, String education, String birthday, String engineerIt, String programmingLanguage) {
+        super(name, surname, education, birthday, engineerIt);
         this.programmingLanguage = programmingLanguage;
     }
 

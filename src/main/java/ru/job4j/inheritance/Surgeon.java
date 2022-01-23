@@ -2,10 +2,15 @@ package ru.job4j.inheritance;
 
 public class Surgeon extends Doctor {
 
-    private String best = "best surgeon";
+    private String best;
 
-    public Surgeon(String name, String surname, String education, String birthday) {
-        super(name, surname, education, birthday);
+    public Surgeon(String name, String surname, String education, String birthday, String fieldOfActivity, String best) {
+        super(name, surname, education, birthday, fieldOfActivity);
+        this.best = best;
+    }
+
+    public String getBest() {
+        return best;
     }
 
     public void healBody(DiagnosticCard diagnosticCard) {

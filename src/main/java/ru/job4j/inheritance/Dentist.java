@@ -2,10 +2,11 @@ package ru.job4j.inheritance;
 
 public class Dentist extends Doctor {
 
-    private int experience = 12;
+    private int experience;
 
-    public Dentist(String name, String surname, String education, String birthday) {
-        super(name, surname, education, birthday);
+    public Dentist(String name, String surname, String education, String birthday, String fieldOfActivity, int experience) {
+        super(name, surname, education, birthday, fieldOfActivity);
+        this.experience = experience;
     }
 
     public void healTooth(DiagnosticCard diagnosticCard) {
