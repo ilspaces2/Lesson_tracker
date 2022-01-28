@@ -12,7 +12,7 @@ public class StartUITest {
         Output out = new ConsoleOutput();
         Input input = new StubInput(new String[]{"0", "Create item", "1"});
         Tracker tracker = new Tracker();
-        UserAction[] actions = {new CreateAction(out), new ExitAction()};
+        UserAction[] actions = {new CreateAction(out), new ExitAction(out)};
         new StartUI(out).init(input, tracker, actions);
         assertThat(tracker.findAll()[0].getName(), is("Create item"));
     }
@@ -25,7 +25,7 @@ public class StartUITest {
         tracker.add(item);
         String replacedName = "New item name";
         Input input = new StubInput(new String[]{"0", String.valueOf(item.getId()), replacedName, "1"});
-        UserAction[] actions = {new EditAction(out), new ExitAction()};
+        UserAction[] actions = {new EditAction(out), new ExitAction(out)};
         new StartUI(out).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId()).getName(), is(replacedName));
     }
@@ -37,7 +37,7 @@ public class StartUITest {
         Item item = new Item("Delete item");
         tracker.add(item);
         Input input = new StubInput(new String[]{"0", String.valueOf(item.getId()), "1"});
-        UserAction[] actions = {new DeleteAction(out), new ExitAction()};
+        UserAction[] actions = {new DeleteAction(out), new ExitAction(out)};
         new StartUI(out).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId()), is(nullValue()));
     }
@@ -47,11 +47,12 @@ public class StartUITest {
         Output out = new StubOutput();
         Input in = new StubInput(new String[]{"0"});
         Tracker tracker = new Tracker();
-        UserAction[] actions = {new ExitAction()};
+        UserAction[] actions = {new ExitAction(out)};
         new StartUI(out).init(in, tracker, actions);
         assertThat(out.toString(), is(
                 "Menu:" + System.lineSeparator()
                         + "0. Exit Program" + System.lineSeparator()
+                        + "=== Exit ===" + System.lineSeparator()
         ));
 
     }
