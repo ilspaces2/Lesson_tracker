@@ -8,22 +8,6 @@ import static org.junit.Assert.*;
 public class ValidateInputTest {
 
     @Test
-    public void whenPrintErrMsg() {
-        Output out = new StubOutput();
-        Input in = new ValidateInput(out, new StubInput(new String[]{"ExitErr", "0"}));
-        Tracker tracker = new Tracker();
-        UserAction[] actions = {new ExitAction(out)};
-        new StartUI(out).init(in, tracker, actions);
-        String ln = System.lineSeparator();
-        assertThat(out.toString(), is(
-                "Menu:" + ln
-                        + "0. Exit Program" + ln
-                        + "Please enter validate data again." + ln
-                        + "=== Exit ===" + ln
-        ));
-    }
-
-    @Test
     public void whenValidInput() {
         Output out = new StubOutput();
         Input in = new StubInput(
@@ -48,15 +32,16 @@ public class ValidateInputTest {
     @Test
     public void whenValidMultiInput() {
         Output out = new StubOutput();
-        String[] stubInput = {"2", "3", "1", "0"};
-        Input in = new StubInput(stubInput);
+        Input in = new StubInput(new String[]{"2", "3", "1", "0"});
         ValidateInput input = new ValidateInput(out, in);
-        int[] selected = new int[stubInput.length];
-        for (int i = 0; i < selected.length; i++) {
-            selected[i] = input.askInt("Enter menu:");
-        }
-        int[] expected = {2, 3, 1, 0};
-        assertArrayEquals(expected, selected);
+        int selected = input.askInt("Enter menu:");
+        assertThat(selected, is(2));
+        selected = input.askInt("Enter menu:");
+        assertThat(selected, is(3));
+        selected = input.askInt("Enter menu:");
+        assertThat(selected, is(1));
+        selected = input.askInt("Enter menu:");
+        assertThat(selected, is(0));
     }
 
     @Test
