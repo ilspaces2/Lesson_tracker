@@ -11,12 +11,11 @@ public class BankService {
 
     public void addAccount(String passport, Account account) {
         User user = findByPassport(passport);
-        if (user == null) {
-            System.out.println("Юзер не найден");
-        } else if (!users.get(user).contains(account)) {
-            users.get(user).add(account);
-        } else {
-            System.out.println("Такой аккаунт уже есть");
+        if (user != null) {
+            List<Account> accounts = users.get(user);
+            if (!accounts.contains(accounts)) {
+                accounts.add(account);
+            }
         }
     }
 
