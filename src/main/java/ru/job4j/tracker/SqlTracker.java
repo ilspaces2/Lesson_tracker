@@ -88,12 +88,9 @@ public class SqlTracker implements Store, AutoCloseable {
         List<Item> items = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement("select * from items")) {
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    items.add(new Item(
-                            resultSet.getString(2),
-                            resultSet.getInt(1),
-                            resultSet.getTimestamp(3).toLocalDateTime()
-                    ));
+                Item item;
+                while ((item = findItem(resultSet)) != null) {
+                    items.add(item);
                 }
             }
         } catch (Exception e) {
@@ -108,12 +105,9 @@ public class SqlTracker implements Store, AutoCloseable {
         try (PreparedStatement ps = cn.prepareStatement("select * from items where name=?")) {
             ps.setString(1, key);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    items.add(new Item(
-                            resultSet.getString(2),
-                            resultSet.getInt(1),
-                            resultSet.getTimestamp(3).toLocalDateTime()
-                    ));
+                Item item;
+                while ((item = findItem(resultSet)) != null) {
+                    items.add(item);
                 }
             }
         } catch (Exception e) {
@@ -128,16 +122,22 @@ public class SqlTracker implements Store, AutoCloseable {
         try (PreparedStatement ps = cn.prepareStatement("select * from items where id=?")) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    item = new Item(
-                            resultSet.getString(2),
-                            resultSet.getInt(1),
-                            resultSet.getTimestamp(3).toLocalDateTime()
-                    );
-                }
+                item = findItem(resultSet);
             }
         } catch (Exception e) {
             LOG.error("findById", e);
+        }
+        return item;
+    }
+
+    private Item findItem(ResultSet resultSet) throws SQLException {
+        Item item = null;
+        if (resultSet.next()) {
+            item = new Item(
+                    resultSet.getString(2),
+                    resultSet.getInt(1),
+                    resultSet.getTimestamp(3).toLocalDateTime()
+            );
         }
         return item;
     }
