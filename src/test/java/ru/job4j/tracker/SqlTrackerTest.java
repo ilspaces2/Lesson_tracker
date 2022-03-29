@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 
 public class SqlTrackerTest {
 
-    static Connection connection;
+   private static Connection connection;
 
     @BeforeClass
     public static void initConnection() {
