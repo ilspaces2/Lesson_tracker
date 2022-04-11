@@ -148,4 +148,15 @@ public class SqlTracker implements Store, AutoCloseable {
         }
         return item;
     }
+
+    @Override
+    public boolean deleteAll() {
+        boolean rez = false;
+        try (PreparedStatement ps = cn.prepareStatement("delete from items")) {
+            rez = ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            LOG.error("delete all", e);
+        }
+        return rez;
+    }
 }

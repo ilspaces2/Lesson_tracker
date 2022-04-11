@@ -59,4 +59,9 @@ public class MemTracker implements Store {
         }
         return index != -1;
     }
+
+    public boolean deleteAll() {
+        items.clear();
+        return true;
+    }
 }

@@ -5,6 +5,8 @@ import java.util.List;
 public interface Store {
     Item add(Item item);
 
+    boolean deleteAll();
+
     boolean replace(int id, Item item);
 
     boolean delete(int id);
