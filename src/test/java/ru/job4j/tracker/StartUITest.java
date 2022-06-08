@@ -8,6 +8,9 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class StartUITest {
     @Test
@@ -167,5 +170,67 @@ public class StartUITest {
                         + "=== Exit ===" + ln
         ));
 
+    }
+
+    @Test
+    public void whenReplaceItemWithMock() {
+        Output out = new StubOutput();
+        EditAction editAction = new EditAction(out);
+        MemTracker memTracker = new MemTracker();
+        Item item = new Item("Replace item");
+        memTracker.add(item);
+        String replacedName = "New item name";
+        Input input = mock(Input.class);
+        when(input.askInt(any(String.class))).thenReturn(item.getId());
+        when(input.askStr(any(String.class))).thenReturn(replacedName);
+        editAction.execute(input, memTracker);
+        String ln = System.lineSeparator();
+        assertThat(out.toString(), is("=== Edit item ===" + ln + "Заявка изменена успешно." + ln));
+        assertThat(memTracker.findById(item.getId()).getName(), is(replacedName));
+    }
+
+    @Test
+    public void whenDeleteItemWithMock() {
+        Output out = new StubOutput();
+        DeleteAction deleteAction = new DeleteAction(out);
+        MemTracker memTracker = new MemTracker();
+        Item item = new Item("Delete item");
+        memTracker.add(item);
+        Input input = mock(Input.class);
+        when(input.askInt(any(String.class))).thenReturn(item.getId());
+        deleteAction.execute(input, memTracker);
+        String ln = System.lineSeparator();
+        assertThat(out.toString(), is("=== Delete item ===" + ln + "Заявка удалена успешно." + ln));
+        assertThat(memTracker.findById(item.getId()), is(nullValue()));
+    }
+
+    @Test
+    public void whenFindByIdIWithMock() {
+        Output out = new StubOutput();
+        FindByIdAction findByIdAction = new FindByIdAction(out);
+        MemTracker memTracker = new MemTracker();
+        Item item = new Item("Find by id");
+        memTracker.add(item);
+        Input input = mock(Input.class);
+        when(input.askInt(any(String.class))).thenReturn(item.getId());
+        findByIdAction.execute(input, memTracker);
+        String ln = System.lineSeparator();
+        assertThat(out.toString(),
+                is("=== Find item by id ===" + ln + memTracker.findById(item.getId()) + ln));
+    }
+
+    @Test
+    public void whenFindByNameWithMock() {
+        Output out = new StubOutput();
+        FindByNameAction findByNameAction = new FindByNameAction(out);
+        MemTracker memTracker = new MemTracker();
+        Item item = new Item("Find by name");
+        memTracker.add(item);
+        Input input = mock(Input.class);
+        when(input.askStr(any(String.class))).thenReturn(item.getName());
+        findByNameAction.execute(input, memTracker);
+        String ln = System.lineSeparator();
+        assertThat(out.toString(),
+                is("=== Find items by name ===" + ln + memTracker.findById(item.getId()) + ln));
     }
 }
