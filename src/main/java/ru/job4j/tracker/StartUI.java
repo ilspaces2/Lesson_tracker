@@ -36,12 +36,14 @@ public class StartUI {
     public static void main(String[] args) {
         Output output = new ConsoleOutput();
         Input input = new ValidateInput(output, new ConsoleInput());
-        HmbTracker tracker = new HmbTracker();
+        SqlTracker tracker = new SqlTracker();
+        tracker.init();
         List<UserAction> actions = new ArrayList<>(Arrays.asList(
                 new MultiCreateAction(output, 10000),
                 new DeleteAllAction(),
                 new CreateAction(output),
                 new ShowAllAction(output),
+                new ShowAllActionReactive(output),
                 new EditAction(output),
                 new DeleteAction(output),
                 new FindByIdAction(output),

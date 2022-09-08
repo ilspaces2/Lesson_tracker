@@ -16,4 +16,7 @@ public interface Store {
     List<Item> findByName(String key);
 
     Item findById(int id);
+
+    default void findAll(Observe<Item> observe) {
+    }
 }

@@ -159,4 +159,18 @@ public class SqlTracker implements Store, AutoCloseable {
         }
         return rez;
     }
+
+    @Override
+    public void findAll(Observe<Item> observe) {
+        try (PreparedStatement ps = cn.prepareStatement("select * from items")) {
+            try (ResultSet resultSet = ps.executeQuery()) {
+                Item item;
+                while ((item = findItem(resultSet)) != null) {
+                    observe.receive(item);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("findAllReact", e);
+        }
+    }
 }
